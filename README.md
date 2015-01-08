@@ -1,106 +1,18 @@
-# Bosh workspace
-[![Build Status](https://img.shields.io/travis/swisscom/bosh-workspace/master.svg?style=flat-square)](https://travis-ci.org/swisscom/bosh-workspace) [![Test Coverage](https://img.shields.io/codeclimate/coverage/github/rkoster/bosh-workspace.svg?style=flat-square)](https://codeclimate.com/github/rkoster/bosh-workspace) [![Code Climate](https://img.shields.io/codeclimate/github/rkoster/bosh-workspace.svg?style=flat-square)](https://codeclimate.com/github/rkoster/bosh-workspace) [![Dependency Status](https://img.shields.io/gemnasium/swisscom/bosh-workspace.svg?style=flat-square)](https://gemnasium.com/swisscom/bosh-workspace)
+# Bosh plugin generator
+This gem creates file system tree structure for BOSH plugin. BOSH installs and updates software packages on large numbers of VMs over many IaaS providers with the absolute minimum of configuration changes.
 
+## What is BOSH?
+BOSH orchestrates initial deployments and ongoing updates that are: predictable, repeatable, reliable, self-healing, infrastructure-agnostic. You can take a look on [BOSH project on GitHub](https://github.com/cloudfoundry/bosh) and read more details in [docs](http://docs.cloudfoundry.org/bosh/).
 
-This is a `bosh` cli plugin for creating reproducible and upgradable deployments.
-
-## Getting started
-Before you start make sure ruby, bundler and spiff are available on your system.
-Instructions for installing spiff can found [here](https://github.com/cloudfoundry-incubator/spiff#installation).
-
-### Creating a workspace repository
-First you will have to create a new repo for our company called Foo Group (short FG).
+## How to install
 ```
-git init fg-boshworkspace
-cd fg-boshworkspace
+gem install bosh-plugin-generator
 ```
 
-Lets create the initial files & directories.
+## How to use
 ```
-mkdir deployments templates
-echo 'source "https://rubygems.org"\n\ngem "bosh-workspace"' > Gemfile
-echo "2.0.0" > .ruby-version
-echo '.stemcells*\n.deployments*\n.releases*\n.stubs*\n' > .gitignore
+bosh generate plugin <plugin-name>
 ```
-
-Now install the gems by running bundler.
-```
-bundle install
-```
-
-Lets finish by making an initial commit.
-```
-git add .
-git commit -m "Initial commit"
-```
-
-### Creating a first deployment
-For demonstration purposes we will deploy Cloud Foundry on bosh-lite.
-The steps below will show the bosh-workspace equivalent of [bosh-lite manual deploy instructions](https://github.com/cloudfoundry/bosh-lite#manual-deploy).
-
-Before we start make sure you have access to properly [installed bosh-lite](https://github.com/cloudfoundry/bosh-lite#install).
-
-We will start by targetting our bosh-lite.
-```
-bosh target 192.168.50.4
-bosh login admin admin
-```
-
-Now lets create our deployment file.
-```
-cat >deployments/cf-warden.yml <<EOL
----
-name: cf-warden
-director_uuid: current
-
-releases:
-  - name: cf
-    version: latest
-    git: https://github.com/cloudfoundry/cf-release.git
-
-stemcells:
-  - name: bosh-warden-boshlite-ubuntu-lucid-go_agent
-    version: 60
-
-templates:
-  - cf/cf-deployment.yml
-  - cf/cf-jobs.yml
-  - cf/cf-properties.yml
-  - cf/cf-infrastructure-warden.yml
-  - cf/cf-minimal-dev.yml
-
-meta:
-  default_quota_definitions:
-    default:
-      memory_limit: 102400 # Increased limit for demonstration purposes
-EOL
-```
-
-Now lets use this deployment and upload it's dependencies.
-```
-bosh deployment cf-warden
-bosh prepare deployment
-```
-
-Lets make sure to above template paths exist.
-```
-ln -s ../.releases/cf/templates templates/cf
-```
-
-To finish we only have to start the deployment process and commit our changes.
-```
-bosh deploy
-git add . && git commit -m "Added cf-warden deployment"
-```
-Congratulations you should now have a running Cloud Foundry.
-For further reference on how to start using it go to the [bosh-lite documentation](https://github.com/cloudfoundry/bosh-lite#try-your-cloud-foundry-deployment).
-
-## Experimental
-### dns support
-Dns support can be enabled by adding a `domain_name` property to your deployment.
-For example: `domain_name: microbosh` or if you are using a normal bosh just use `bosh`.
-When enabled, a transformation step will be executed after the spiff merge.
-Which will transform all the static ip references into domain names.
 
 ## Contributing
 
@@ -112,5 +24,4 @@ Which will transform all the static ip references into domain names.
 
 ## List of Contributors
 
-* [Swisscom](https://www.swisscom.ch)
-* [Stark & Wayne](http://starkandwayne.com)
+* [Altoros](https://www.altoros.com)
