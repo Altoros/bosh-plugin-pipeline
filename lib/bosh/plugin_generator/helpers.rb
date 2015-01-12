@@ -4,7 +4,10 @@ module Bosh
   module PluginGenerator
     module Helpers
 
-      attr_accessor :generator_options, :lib_folder, :plugin_folder, :commands_folder
+      attr_accessor :generator, :generator_options, :lib_folder, :plugin_folder, :commands_folder
+      extend Forwardable
+      def_delegator :@generate, :generator
+
       def extract_options(plugin_name)
         generator_options[:author] = options[:author] || Git.global_config["user.name"]
         generator_options[:email]  = options[:email]  || Git.global_config["user.email"]
@@ -15,6 +18,7 @@ module Bosh
         @lib_folder      = File.join('.', 'lib', 'bosh')
         @plugin_folder   = File.join(lib_folder, generator_options[:short_plugin_name])
         @commands_folder = File.join(lib_folder, 'cli', 'commands')
+        @generator = Bosh::PluginGenerator::Generator.new(generator_options)
       end
       
       def generate_files
@@ -69,12 +73,10 @@ module Bosh
         generate("licenses/#{generator_options[:license]}.txt", 'LICENSE')
       end
 
-      def generate(source, target)
-
-        # mkdir_p(folder)
-
-
+      def generate_rspec_files
+        generate("licenses/#{generator_options[:license]}.txt", 'LICENSE')
       end
+
 
     end
   end
