@@ -2,12 +2,12 @@ describe Bosh::PluginGenerator::Generator do
   let(:context) { { people: ['you', 'me'] } }
   let(:tmpdir) { Dir.mktmpdir }
   let(:target) { File.join(tmpdir, 'subfolder-1', 'subfolder-2', 'result.txt') }
-  let(:generator) { Bosh::PluginGenerator::Generator.new(context) }
+  subject { Bosh::PluginGenerator::Generator.new(context) }
   after { FileUtils.remove_entry_secure tmpdir }
 
   describe '#generate' do
     before do
-      generator.generate(asset_file('simple-template.txt'), target)
+      subject.generate(asset_file('simple-template.txt'), target)
     end
 
     context 'simple template' do 
