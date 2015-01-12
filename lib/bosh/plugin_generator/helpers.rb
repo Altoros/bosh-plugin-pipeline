@@ -4,7 +4,7 @@ module Bosh
   module PluginGenerator
     module Helpers
 
-      attr_accessor :plugin_folder, :lib_folder, :helpers_folder, :commands_folder
+      attr_accessor :plugin_name, :plugin_folder, :lib_folder, :helpers_folder, :commands_folder
 
       extend Forwardable
       def_delegator :@generator, :generate
@@ -17,6 +17,7 @@ module Bosh
         @helpers_folder  = File.join(lib_folder, short_plugin_name)
         @commands_folder = File.join(lib_folder, 'cli', 'commands')
 
+        context = {}
         context[:author]  = options[:author] || Git.global_config["user.name"]
         context[:email]   = options[:email]  || Git.global_config["user.email"]
         context[:license] = options[:license]
@@ -25,7 +26,10 @@ module Bosh
         context[:short_plugin_name] = short_plugin_name
         context[:class_name] = short_plugin_name.split('_').collect(&:capitalize).join
 
-        @generator = Bosh::PluginGenerator::Generator.new(generator_options, source_folder: File.expand_path("../../../../templates", __FILE__))
+        puts context
+
+        templates_folder = File.expand_path("../../../../templates", __FILE__)
+        @generator = Bosh::PluginGenerator::Generator.new(context, source_folder: templates_folder)
       end
       
       def generate_files
@@ -42,7 +46,7 @@ module Bosh
       def full_plugin_name
         return @full_plugin_name if @full_plugin_name
         separator = plugin_name.include?('_') ? '_' : '-'
-        @full_plugin_name = plugin_name.start_with?('bosh') ? ['bosh', separator, plugin_name].join('') : plugin_name
+        @full_plugin_name = plugin_name.start_with?('bosh') ? plugin_name : ['bosh', plugin_name].join(separator)
       end
 
       def short_plugin_name
