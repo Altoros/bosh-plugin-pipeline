@@ -1,3 +1,9 @@
+module Bosh
+  module PluginGenerator
+  	include BoshExtensions
+  end
+end
+
 
 require "cli"
 require "cli/core_ext"

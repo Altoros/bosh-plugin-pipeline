@@ -4,21 +4,27 @@ module Bosh
   module PluginGenerator
     module Helpers
 
-      attr_accessor :generator_options, :lib_folder, :plugin_folder, :commands_folder
+      attr_accessor :plugin_folder, :lib_folder, :helpers_folder, :commands_folder
+
       extend Forwardable
       def_delegator :@generator, :generate
 
       def extract_options(plugin_name)
-        generator_options[:author] = options[:author] || Git.global_config["user.name"]
-        generator_options[:email]  = options[:email]  || Git.global_config["user.email"]
-        generator_options[:license] = options[:license]
-        generator_options[:description] = options[:description] || ''
-        generator_options[:full_plugin_name]  = full_plugin_name(plugin_name)
-        generator_options[:short_plugin_name] = short_plugin_name(plugin_name)
-        generator_options[:class_name] = generator_options[:short_plugin_name].split('_').collect(&:capitalize).join
-        @lib_folder      = File.join('.', 'lib', 'bosh')
-        @plugin_folder   = File.join(lib_folder, generator_options[:short_plugin_name])
+        @plugin_name     = plugin_name
+        @license_type    = options[:license]
+        @lib_folder      = File.join(plugin_name, 'lib', 'bosh')
+        @spec_folder     = File.join(plugin_name, 'spec')
+        @helpers_folder  = File.join(lib_folder, short_plugin_name)
         @commands_folder = File.join(lib_folder, 'cli', 'commands')
+
+        context[:author]  = options[:author] || Git.global_config["user.name"]
+        context[:email]   = options[:email]  || Git.global_config["user.email"]
+        context[:license] = options[:license]
+        context[:description] = options[:description] || ''
+        context[:full_plugin_name]  = full_plugin_name
+        context[:short_plugin_name] = short_plugin_name
+        context[:class_name] = short_plugin_name.split('_').collect(&:capitalize).join
+
         @generator = Bosh::PluginGenerator::Generator.new(generator_options, source_folder: File.expand_path("../../../../templates", __FILE__))
       end
       
@@ -33,37 +39,34 @@ module Bosh
 
       private
 
-      def full_plugin_name(plugin_name)
+      def full_plugin_name
+        return @full_plugin_name if @full_plugin_name
         separator = plugin_name.include?('_') ? '_' : '-'
-        plugin_name.start_with?('bosh') ? ['bosh', separator, plugin_name].join('') : plugin_name
+        @full_plugin_name = plugin_name.start_with?('bosh') ? ['bosh', separator, plugin_name].join('') : plugin_name
       end
 
-      def short_plugin_name(plugin_name)
-        plugin_name.gsub(/^bosh[_-]/, '')
-      end
-
-      def generator_options
-      	@generator_options ||= {}
+      def short_plugin_name
+        @short_plugin_name ||= plugin_name.gsub(/^bosh[_-]/, '')
       end
 
       def license?
-        !!generator_options[:license]
+        !!@license_type
       end
 
       def generate_command_class
-        generate('cli/commands/command.rb.erb', File.join(commands_folder, "#{generator_options[:short_plugin_name]}.rb"))
+        generate('cli/commands/command.rb.erb', File.join(commands_folder, "#{short_plugin_name}.rb"))
       end
 
       def generate_helpers
-        generate('plugin_folder/helpers.rb.erb', File.join(lib_folder, generator_options[:short_plugin_name], 'helpers.rb'))
+        generate('helpers_folder/helpers.rb.erb', File.join(helpers_folder, 'helpers.rb'))
       end
 
       def generate_version
-        generate('plugin_folder/version.rb.erb', File.join(lib_folder, generator_options[:short_plugin_name], 'version.rb'))
+        generate('helpers_folder/version.rb.erb', File.join(helpers_folder, 'version.rb'))
       end
 
       def generate_gemspec
-        generate('gemspec.erb', "#{generator_options[:full_plugin_name]}.gemspec")
+        generate('gemspec.erb', "#{full_plugin_name}.gemspec")
       end
 
       def generate_readme
@@ -71,13 +74,12 @@ module Bosh
       end
 
       def generate_license
-        generate("licenses/#{generator_options[:license]}.txt", 'LICENSE')
+        generate("licenses/#{@license_type}.txt", 'LICENSE')
       end
 
       def generate_rspec_files
-        generate("licenses/#{generator_options[:license]}.txt", 'LICENSE')
+        generate("licenses/#{@license_type}.txt", 'LICENSE')
       end
-
 
     end
   end

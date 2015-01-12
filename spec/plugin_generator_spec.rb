@@ -3,6 +3,9 @@ describe "bosh generate plugin" do
   subject { Bosh::PluginGenerator::Generator.new(context) }
   after { FileUtils.remove_entry_secure tmpdir }
 
+# Git.global_config
+# Git.global_config["user.name"]
+
   describe 'magic command' do
 
     context 'creates magic' do 
@@ -29,6 +32,7 @@ describe "bosh generate plugin" do
     context 'creates magic' do 
       before do
         Dir.chdir(tmpdir)
+        puts "chdir #{tmpdir}"
         command = <<-CMD 
                          bosh generate plugin magic --email my@email.com              \
                                                     --author Gandalf                  \
@@ -42,7 +46,7 @@ CMD
 
       end
 
-      it 'creates magic folder' do
+      it 'creates license file' do
         
       end
       
