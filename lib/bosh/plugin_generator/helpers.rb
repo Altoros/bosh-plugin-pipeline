@@ -70,19 +70,19 @@ module Bosh
       end
 
       def generate_gemspec
-        generate('gemspec.erb', "#{full_plugin_name}.gemspec")
+        generate('gemspec.erb', File.join(plugin_name, "#{full_plugin_name}.gemspec"))
       end
 
       def generate_readme
-        generate('README.md.erb', 'README.md')
+        generate('README.md.erb', File.join(plugin_name, 'README.md'))
       end
 
       def generate_license
-        generate("licenses/#{@license_type}.txt", 'LICENSE')
+        generate("licenses/#{@license_type}.txt", File.join(plugin_name, 'LICENSE'))
       end
 
       def generate_rspec_files
-        generate("licenses/#{@license_type}.txt", 'LICENSE')
+        # generate("licenses/#{@license_type}.txt", File.join(plugin_name, 'LICENSE'))
       end
 
     end
