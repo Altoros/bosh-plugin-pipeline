@@ -15,7 +15,7 @@ describe "bosh generate plugin" do
     end
 
     context "without parameters and 'bosh-' preffix" do
-      let(:plugin_folder) { File.join(Dir.pwd, 'bosh') }
+      let(:plugin_folder) { File.join(Dir.pwd, 'magic') }
 
       before(:all) do
         system("bosh generate plugin magic >&2")
@@ -24,14 +24,14 @@ describe "bosh generate plugin" do
       before { Git.stub(:global_config) { { "user.name" => "git user", "user.email" => "git-user@email.com" } } }
 
       it "creates gem with 'bosh-' prefix" do
-        gemspec_file = File.join(plugin_folder, 'magic.gemspec')
+        gemspec_file = File.join(plugin_folder, 'bosh-magic.gemspec')
         puts `ls -la magic`
         expect(File).to exist(gemspec_file)
         expect(File.read(gemspec_file)).to match(/bosh-magic/)
       end
 
       it 'generates gemspec with email from Git setup' do
-        expect(File.read("#{plugin_folder}/magic.gemspec")).to match(/git-user@email.com/)
+        expect(File.read("#{plugin_folder}/bosh-magic.gemspec")).to match(/git-user@email.com/)
         expect(File.read("#{plugin_folder}/magic.gemspec")).to match(/git user/)
       end
 
