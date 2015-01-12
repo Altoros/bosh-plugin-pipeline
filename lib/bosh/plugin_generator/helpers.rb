@@ -4,18 +4,29 @@ module Bosh
   module PluginGenerator
     module Helpers
 
+      attr_accessor :generator_options, :lib_folder, :plugin_folder, :commands_folder
       def extract_options(plugin_name)
         generator_options[:author] = options[:author] || Git.global_config["user.name"]
         generator_options[:email]  = options[:email]  || Git.global_config["user.email"]
-        generator_options[:license] = options.has_key?(:license)
-        generator_options[:license_file] = license? ? options[:license] : nil
+        generator_options[:license] = options[:license]
         generator_options[:full_plugin_name]  = full_plugin_name(plugin_name)
         generator_options[:short_plugin_name] = short_plugin_name(plugin_name)
-        generator_options[:lib_folder] = File.join('.', 'lib')
-        generator_options[:plugin_folder] = File.join(generator_options[:lib_folder], generator_options[:short_plugin_name])
-        generator_options[:commands_folder] = File.join(generator_options[:lib_folder], 'cli', 'commands')
-        generator_options[:plugin_class_name] = generator_options[:short_plugin_name].split('_').collect(&:capitalize).join
+        generator_options[:class_name] = generator_options[:short_plugin_name].split('_').collect(&:capitalize).join
+        @lib_folder      = File.join('.', 'lib', 'bosh')
+        @plugin_folder   = File.join(lib_folder, generator_options[:short_plugin_name])
+        @commands_folder = File.join(lib_folder, 'cli', 'commands')
       end
+      
+      def generate_files
+        generate_command_class
+        generate_helpers
+        generate_version
+        generate_gemspec
+        generate_readme
+        generate_license if license?
+      end      
+
+      private
 
       def full_plugin_name(plugin_name)
         separator = plugin_name.include?('_') ? '_' : '-'
@@ -34,27 +45,36 @@ module Bosh
         !!plugin_options[:license]
       end
 
-      def generate_files
-        generate_command_class
-        generate_helpers
-        generate_version
-        generate_gemspec
-        generate_readme
-        generate_license if license?
-      end
-
       def generate_command_class
-        generate('command_class.rb', "lib/bosh/cli/commands/#{generator_options[:namespace]}.rb")
+        generate('cli/commands/command.rb.erb', File.join(commands_folder, "#{generator_options[:short_plugin_name]}.rb"))
       end
 
       def generate_helpers
-        generate('helpers.rb', 'lib/bosh/cli/commands')
+        generate('plugin_folder/helpers.rb.erb', File.join(lib_folder, generator_options[:short_plugin_name], 'helpers.rb'))
       end
-      def generate_version
-      def generate_gemspec
-      def generate_readme
-      def generate_license
 
+      def generate_version
+        generate('plugin_folder/version.rb.erb', File.join(lib_folder, generator_options[:short_plugin_name], 'version.rb'))
+      end
+
+      def generate_gemspec
+        generate('gemspec.erb', "#{generator_options[:full_plugin_name]}.gemspec", '.')
+      end
+
+      def generate_readme
+        generate('README.md.erb', '.')
+      end
+
+      def generate_license
+        generate("licenses/#{generator_options[:license]}.txt", 'LICENSE')
+      end
+
+      def generate(source, target)
+
+        # mkdir_p(folder)
+
+
+      end
 
     end
   end
