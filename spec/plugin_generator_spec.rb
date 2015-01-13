@@ -35,10 +35,6 @@ describe "bosh generate plugin" do
         expect(File).not_to exist(File.join(plugin_folder, 'LICENSE'))
       end
 
-      it "can perform magic" do
-
-      end
-      
     end
 
     context "with parameters, license and 'bosh-' prefix" do
@@ -70,10 +66,7 @@ CMD
       it "creates license file" do
         expect(File).to exist(File.join(plugin_folder, 'LICENSE'))
       end
-      
-      it "can perform magic" do
-      end
-      
+
     end    
   end
 end

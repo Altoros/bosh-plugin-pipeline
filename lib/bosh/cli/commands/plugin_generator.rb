@@ -13,9 +13,11 @@ module Bosh::Cli::Command
     option "--license [type]", String, "type of license file included to plugin repository" +
                                        "(possible values mit|gpl|lgpl|apache2)"
     def perform(plugin_name)
-      puts options
       extract_options(plugin_name)
+      say "Generating BOSH CLI plugin...".make_green
       generate_files
+      say "DONE. ".make_green
+      say "The plugin is saved to #{File.join(Dir.pwd, plugin_name)}"
     end
 
   end

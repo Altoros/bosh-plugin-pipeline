@@ -90,6 +90,7 @@ module Bosh
         generate("spec/spec_helper.rb", File.join(@spec_folder, 'spec_helper.rb'))
         generate("spec/command_spec.rb", File.join(@spec_folder, 'command_spec.rb'))
         generate("spec/.rspec", File.join(plugin_folder, '.rspec'))
+        generate(".gitignore", File.join(plugin_folder, '.gitignore'))
       end
 
     end
