@@ -1,5 +1,6 @@
 # Bosh plugin generator
 [![Build Status](https://travis-ci.org/Altoros/bosh-plugin-generator.svg?branch=master)](https://travis-ci.org/Altoros/bosh-plugin-generator)
+
 This gem creates file system tree structure for BOSH plugin. BOSH installs and updates software packages on large numbers of VMs over many IaaS providers with the absolute minimum of configuration changes.
 
 ## What is BOSH?
