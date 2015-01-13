@@ -1,6 +1,6 @@
 language: ruby
 before_install:
- - sudo apt-get update -qq
+ - sudo apt-get update -qq --fix-missing
  - sudo apt-get install -qq git
  - "git config --global user.name git-user && git config --global user.email git-user@mail.com"
 rvm:
