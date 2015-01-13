@@ -39,6 +39,7 @@ module Bosh
         generate_gemspec
         generate_readme
         generate_license if license?
+        generate_rspec_files
       end      
 
       private
@@ -82,7 +83,9 @@ module Bosh
       end
 
       def generate_rspec_files
-        # generate("licenses/#{@license_type}.txt", File.join(plugin_name, 'LICENSE'))
+        # generate("spec/spec_helper.rb", File.join(@spec_folder, 'spec_helper.rb'))
+        # generate("spec/command_spec.rb", File.join(@spec_folder, 'spec_helper.rb'))
+        # generate("spec/.rb", File.join(@spec_folder, 'spec_helper.rb'))
       end
 
     end

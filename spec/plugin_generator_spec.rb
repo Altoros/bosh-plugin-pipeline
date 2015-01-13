@@ -1,7 +1,6 @@
 describe "bosh generate plugin" do
 
   describe 'magic command' do
-    # after { FileUtils.remove_entry_secure tmpdir }
 
     before(:context) do
       @current_dir = Dir.pwd
@@ -11,7 +10,7 @@ describe "bosh generate plugin" do
 
     after(:context) do
       Dir.chdir(@current_dir)
-      FileUtils.remove_entry_secure @tmpdir
+      FileUtils.remove_entry_secure(@tmpdir)
     end
 
     context "without parameters and 'bosh-' preffix" do
@@ -25,7 +24,6 @@ describe "bosh generate plugin" do
 
       it "creates gem with 'bosh-' prefix" do
         gemspec_file = File.join(plugin_folder, 'bosh-magic.gemspec')
-        puts `ls -la magic`
         expect(File).to exist(gemspec_file)
         expect(File.read(gemspec_file)).to match(/bosh-magic/)
       end

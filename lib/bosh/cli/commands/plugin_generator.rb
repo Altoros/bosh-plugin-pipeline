@@ -12,7 +12,8 @@ module Bosh::Cli::Command
     option "--description[=text]", String, "Short description of the plugin"
     option "--license[=type]", String, "type of license file included to plugin repository" +
                                        "(possible values mit|gpl|lgpl|apache2)"
-    def generate_plugin(plugin_name)
+    def perform(plugin_name)
+      puts options
       extract_options(plugin_name)
       generate_files
     end
