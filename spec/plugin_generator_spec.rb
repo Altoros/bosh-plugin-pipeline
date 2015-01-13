@@ -26,16 +26,16 @@ describe "bosh generate plugin" do
         expect(File.read(gemspec_file)).to match(/bosh-magic/)
       end
 
-      it 'generates gemspec with email from Git setup' do
+      it "generates gemspec with email from Git setup" do
         expect(File.read("#{plugin_folder}/bosh-magic.gemspec")).to include(Git.global_config["user.name"])
         expect(File.read("#{plugin_folder}/bosh-magic.gemspec")).to include(Git.global_config["user.email"])
       end
 
-      it 'has no license file' do
+      it "has no license file" do
         expect(File).not_to exist(File.join(plugin_folder, 'LICENSE'))
       end
 
-      it 'can perform magic' do
+      it "can perform magic" do
 
       end
       
@@ -53,25 +53,25 @@ CMD
         system(command)
       end
 
-      it 'creates folder with the name specified as plugin a name' do
+      it "creates folder with the name specified as plugin a name" do
         expect(File).to exist(plugin_folder)
       end
 
-      it 'creates gem with \'bosh-\' prefix' do
+      it "creates gem with 'bosh-' prefix" do
         gemspec_file = File.join(plugin_folder, 'bosh-magic.gemspec')
         expect(File).to exist(gemspec_file)
         expect(File.read(gemspec_file)).to match(/bosh-magic/)
       end
 
-      it 'generates gemspec with correct email' do
+      it "generates gemspec with correct email" do
         expect(File.read("#{plugin_folder}/bosh-magic.gemspec")).to match(/gandalf@email.com/)
       end
 
-      it 'creates license file' do
+      it "creates license file" do
         expect(File).to exist(File.join(plugin_folder, 'LICENSE'))
       end
       
-      it 'can perform magic' do
+      it "can perform magic" do
       end
       
     end    

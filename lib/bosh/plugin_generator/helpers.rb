@@ -11,6 +11,7 @@ module Bosh
 
       def extract_options(plugin_name)
         @plugin_name     = plugin_name
+        @plugin_folder   = plugin_name
         @license_type    = options[:license]
         @lib_folder      = File.join(plugin_name, 'lib', 'bosh')
         @spec_folder     = File.join(plugin_name, 'spec')
@@ -39,7 +40,7 @@ module Bosh
         generate_gemspec
         generate_readme
         generate_license if license?
-        generate_rspec_files
+        generate_developer_environment
       end      
 
       private
@@ -59,6 +60,7 @@ module Bosh
       end
 
       def generate_command_class
+        generate('main.rb.erb', File.join(lib_folder, "#{short_plugin_name}.rb"))
         generate('cli/commands/command.rb.erb', File.join(commands_folder, "#{short_plugin_name}.rb"))
       end
 
@@ -82,10 +84,12 @@ module Bosh
         generate("licenses/#{@license_type}.txt", File.join(plugin_name, 'LICENSE'))
       end
 
-      def generate_rspec_files
-        # generate("spec/spec_helper.rb", File.join(@spec_folder, 'spec_helper.rb'))
-        # generate("spec/command_spec.rb", File.join(@spec_folder, 'spec_helper.rb'))
-        # generate("spec/.rb", File.join(@spec_folder, 'spec_helper.rb'))
+      def generate_developer_environment
+        generate("Gemfile", File.join(plugin_folder, "Gemfile"))
+        generate("Rakefile", File.join(plugin_folder, 'Rakefile'))
+        generate("spec/spec_helper.rb", File.join(@spec_folder, 'spec_helper.rb'))
+        generate("spec/command_spec.rb", File.join(@spec_folder, 'command_spec.rb'))
+        generate("spec/.rspec", File.join(plugin_folder, '.rspec'))
       end
 
     end
