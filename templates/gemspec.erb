@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.version       = Bosh::<%= class_name %>::VERSION
   spec.authors       = ["<%= author %>"]
   spec.email         = ["<%= email %>"]
-  spec.description   = %q{<%= description || "Short description." %>}
-  spec.summary       = %q{<%= description || "This is plugin to enhance BOSH CLI. BOSH installs and updates software packages on large numbers of VMs over many IaaS providers with the absolute minimum of configuration changes." %>}
+  spec.description   = %q{<%= description %>}
+  spec.summary       = %q{<%= description %>}
   spec.homepage      = "https://github.com/cloudfoundry/bosh"
   <%- if license %>
   spec.license       = "<%= license.upcase %>"

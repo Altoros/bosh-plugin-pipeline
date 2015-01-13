@@ -17,16 +17,16 @@ module Bosh
         @helpers_folder  = File.join(lib_folder, short_plugin_name)
         @commands_folder = File.join(lib_folder, 'cli', 'commands')
 
-        context = {}
-        context[:author]  = options[:author] || Git.global_config["user.name"]
-        context[:email]   = options[:email]  || Git.global_config["user.email"]
-        context[:license] = options[:license]
-        context[:description] = options[:description] || ''
-        context[:full_plugin_name]  = full_plugin_name
-        context[:short_plugin_name] = short_plugin_name
-        context[:class_name] = short_plugin_name.split('_').collect(&:capitalize).join
-
-        puts context
+        default_context = {
+          email: Git.global_config["user.email"],
+          author: Git.global_config["user.name"],
+          description: "Short description.",
+          license: nil,
+          full_plugin_name: full_plugin_name,
+          short_plugin_name: short_plugin_name,
+          class_name: short_plugin_name.split('_').collect(&:capitalize).join
+        }
+        context = default_context.merge(options)
 
         templates_folder = File.expand_path("../../../../templates", __FILE__)
         @generator = Bosh::PluginGenerator::Generator.new(context, source_folder: templates_folder)
