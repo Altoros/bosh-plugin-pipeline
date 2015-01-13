@@ -10,10 +10,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ["<%= author %>"]
   spec.email         = ["<%= email %>"]
   spec.description   = %q{<%= description || "Short description." %>}
-  spec.summary       = %q{<%= description || "This is plugin to enhance BOSH CLI. BOSH installs and updates software packages on large numbers of VMs over many IaaS providers with the absolute minimum of configuration changes." %> }
+  spec.summary       = %q{<%= description || "This is plugin to enhance BOSH CLI. BOSH installs and updates software packages on large numbers of VMs over many IaaS providers with the absolute minimum of configuration changes." %>}
   spec.homepage      = "https://github.com/cloudfoundry/bosh"
   <%- if license %>
-    spec.license       = "<%= license.upcase %>"
+  spec.license       = "<%= license.upcase %>"
   <% end %>
 
   spec.files         = `git ls-files`.split($/)

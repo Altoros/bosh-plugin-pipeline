@@ -20,8 +20,6 @@ describe "bosh generate plugin" do
         system("bosh generate plugin magic >&2")
       end
 
-      before { Git.stub(:global_config) { { "user.name" => "git user", "user.email" => "git-user@email.com" } } }
-
       it "creates gem with 'bosh-' prefix" do
         gemspec_file = File.join(plugin_folder, 'bosh-magic.gemspec')
         expect(File).to exist(gemspec_file)
@@ -29,8 +27,8 @@ describe "bosh generate plugin" do
       end
 
       it 'generates gemspec with email from Git setup' do
-        expect(File.read("#{plugin_folder}/bosh-magic.gemspec")).to match(/git-user@email.com/)
-        expect(File.read("#{plugin_folder}/magic.gemspec")).to match(/git user/)
+        expect(File.read("#{plugin_folder}/bosh-magic.gemspec")).to include(Git.global_config["user.name"])
+        expect(File.read("#{plugin_folder}/bosh-magic.gemspec")).to include(Git.global_config["user.email"])
       end
 
       it 'has no license file' do
@@ -38,7 +36,7 @@ describe "bosh generate plugin" do
       end
 
       it 'can perform magic' do
-        puts "11111"
+
       end
       
     end
@@ -74,7 +72,6 @@ CMD
       end
       
       it 'can perform magic' do
-        puts "22222"
       end
       
     end    
