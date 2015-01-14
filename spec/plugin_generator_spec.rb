@@ -17,7 +17,7 @@ describe "bosh generate plugin" do
       let(:plugin_folder) { File.join(Dir.pwd, 'magic') }
 
       before(:all) do
-        system("bosh generate plugin magic >&2")
+        system("bosh generate plugin magic > /dev/null")
       end
 
       it "creates gem with 'bosh-' prefix" do
@@ -44,7 +44,7 @@ describe "bosh generate plugin" do
         command = <<-CMD 
                          bosh generate plugin bosh-magic --email=gandalf@email.com \
                                                          --author=Gandalf          \
-                                                         --license=mit
+                                                         --license=mit > /dev/null
 CMD
         system(command)
       end
