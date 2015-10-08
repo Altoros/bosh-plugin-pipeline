@@ -9,4 +9,3 @@ end
 
 require "bosh/plugin_generator/generator"
 require "bosh/plugin_generator/helpers"
-require "bosh/cli/commands/plugin_generator"

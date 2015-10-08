@@ -1,11 +1,10 @@
 require 'git'
 
 module Bosh
-  module PluginGenerator
+  module BoshVersionUpdater
     module Helpers
 
-      attr_accessor :plugin_name, :plugin_folder, :lib_folder, :helpers_folder,
-                    :commands_folder, :bosh_version
+      attr_accessor :plugin_name, :plugin_folder, :lib_folder, :helpers_folder, :commands_folder
 
       extend Forwardable
       def_delegator :@generator, :generate
@@ -13,7 +12,6 @@ module Bosh
       def extract_options(plugin_name)
         @plugin_name     = plugin_name
         @plugin_folder   = plugin_name
-        @bosh_version    = Bosh::Cli::VERSION
         @license_type    = options[:license]
         @lib_folder      = File.join(plugin_name, 'lib', 'bosh')
         @spec_folder     = File.join(plugin_name, 'spec')
@@ -27,8 +25,7 @@ module Bosh
           license: nil,
           full_plugin_name: full_plugin_name,
           short_plugin_name: short_plugin_name,
-          class_name: short_plugin_name.split('_').collect(&:capitalize).join,
-          bosh_version: bosh_version
+          class_name: short_plugin_name.split('_').collect(&:capitalize).join
         }
         context = default_context.merge(options)
         raise "You need to specify email and author" if context[:email].nil? || context[:author].nil?
