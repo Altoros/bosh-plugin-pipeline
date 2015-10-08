@@ -4,11 +4,6 @@ module Bosh
   module BoshVersionUpdater
     module Helpers
 
-      attr_accessor :plugin_name, :plugin_folder, :lib_folder, :helpers_folder, :commands_folder
-
-      extend Forwardable
-      def_delegator :@generator, :generate
-
       def extract_options(plugin_name)
         @plugin_name     = plugin_name
         @plugin_folder   = plugin_name

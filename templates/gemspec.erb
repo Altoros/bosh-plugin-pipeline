@@ -3,18 +3,18 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'bosh/<%= short_plugin_name %>/version'
-bosh_version = "<%= bosh_version %>"
+bosh_version = '<%= bosh_version %>'
 
 Gem::Specification.new do |spec|
-  spec.name          = "<%= full_plugin_name %>"
+  spec.name          = '<%= full_plugin_name %>'
   spec.version       = Bosh::<%= class_name %>::VERSION
-  spec.authors       = ["<%= author %>"]
-  spec.email         = ["<%= email %>"]
+  spec.authors       = ['<%= author %>']
+  spec.email         = ['<%= email %>']
   spec.description   = %q{<%= description %>}
   spec.summary       = %q{<%= description %>}
-  spec.homepage      = "https://github.com/cloudfoundry/bosh"
+  spec.homepage      = 'https://github.com/cloudfoundry/bosh'
   <%- if license %>
-  spec.license       = "<%= license.upcase %>"
+  spec.license       = '<%= license.upcase %>'
   <% end %>
 
   spec.files         = `git ls-files`.split($/)

@@ -1,4 +1,5 @@
 require 'git'
+require 'bosh/versions'
 
 module Bosh
   module PluginGenerator
@@ -8,12 +9,13 @@ module Bosh
                     :commands_folder, :bosh_version
 
       extend Forwardable
+      include Bosh::Versions::Helpers
       def_delegator :@generator, :generate
 
       def extract_options(plugin_name)
         @plugin_name     = plugin_name
         @plugin_folder   = plugin_name
-        @bosh_version    = Bosh::Cli::VERSION
+        @bosh_version    = bosh_gem_latest_version
         @license_type    = options[:license]
         @lib_folder      = File.join(plugin_name, 'lib', 'bosh')
         @spec_folder     = File.join(plugin_name, 'spec')

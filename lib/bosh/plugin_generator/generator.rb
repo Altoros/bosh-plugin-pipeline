@@ -7,7 +7,7 @@ module Bosh
       attr_accessor :context, :options
       def initialize(context, options = {})
         @options = options
-      	@context = context
+        @context = context
       end
 
       def generate(source, target)
@@ -18,7 +18,7 @@ module Bosh
         File.write(target, result)
       end
 
-      private 
+      private
 
       def source_folder
         options[:source_folder] || Dir.pwd

@@ -10,14 +10,12 @@ module Bosh::Cli::Command
     option "--path [path]", String, "Path to plugin, by default uses current folder"
     option "--without-tests", "Don't run tests before commit"
     option "--without-commit", "Don't do commit after update"
-    def update_bosh_version(plugin_name)
-      plugin_path = path || Dir.pwd
+    def update_bosh_version
+      plugin_path = options[:path] || Dir.pwd
+      gemspec_file = # find gemspec file in plugin_path
 
-      extract_options(plugin_name)
-      say "Generating BOSH CLI plugin...".make_green
-      generate_files
-      say "DONE. ".make_green
-      say "The plugin is saved to #{File.join(Dir.pwd, plugin_name)}"
+      File.read(gemspec_file)
+
     end
 
   end
