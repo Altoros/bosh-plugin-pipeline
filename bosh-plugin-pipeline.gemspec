@@ -10,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.version       = Bosh::PluginPipeline::VERSION
   spec.authors       = ["Alexander Lomov"]
   spec.email         = ["alexander.lomov@altoros.com"]
-  spec.description   = %q{Create file system tree structure for BOSH plugin development.}
-  spec.summary       = %q{This gem creates file system tree structure for BOSH plugin. BOSH installs and updates software packages on large numbers of VMs over many IaaS providers with the absolute minimum of configuration changes.}
+  spec.description   = %q{BOSH CLI plug-in to create and manage BOSH CLI plug-ins.}
+  spec.summary       = %q{This gem allows to create a file system tree structure for BOSH plugin and to update BOSH version in this plugin automatically.}
   spec.homepage      = "http://altoros.com"
   spec.license       = "MIT"
 

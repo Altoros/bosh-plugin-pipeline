@@ -1,4 +1,4 @@
-require "cli/core_ext"
+require "cli"
 require "cli/validation"
 
 module Bosh
@@ -7,7 +7,5 @@ module Bosh
   end
 end
 
-
 require "bosh/<%= short_plugin_name %>/helpers"
 require "bosh/<%= short_plugin_name %>/version"
-require "bosh/cli/commands/<%= short_plugin_name %>"

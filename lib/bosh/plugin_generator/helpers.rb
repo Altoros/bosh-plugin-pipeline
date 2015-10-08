@@ -88,14 +88,15 @@ module Bosh
       end
 
       def generate_developer_environment
-        generate("Gemfile", File.join(plugin_folder, "Gemfile"))
-        generate("Rakefile", File.join(plugin_folder, 'Rakefile'))
-        generate("spec/spec_helper.rb", File.join(@spec_folder, 'spec_helper.rb'))
-        generate("spec/command_spec.rb", File.join(@spec_folder, 'command_spec.rb'))
-        generate("spec/.rspec", File.join(plugin_folder, '.rspec'))
-        generate(".gitignore", File.join(plugin_folder, '.gitignore'))
-        generate(".ruby-version.erb", File.join(plugin_folder, '.ruby-version'))
-        generate(".ruby-gemset.erb", File.join(plugin_folder, '.ruby-gemset'))
+        generate('Gemfile', File.join(plugin_folder, 'Gemfile'))
+        generate('Rakefile', File.join(plugin_folder, 'Rakefile'))
+        generate('spec/spec_helper.rb', File.join(@spec_folder, 'spec_helper.rb'))
+        generate('spec/command_spec.rb', File.join(@spec_folder, 'command_spec.rb'))
+        generate('spec/.rspec', File.join(plugin_folder, '.rspec'))
+        generate('.gitignore', File.join(plugin_folder, '.gitignore'))
+        generate('.ruby-version.erb', File.join(plugin_folder, '.ruby-version'))
+        generate('.ruby-gemset.erb', File.join(plugin_folder, '.ruby-gemset'))
+        generate('.travis.yml', File.join(plugin_folder, '.travis.yml'))
       end
 
     end

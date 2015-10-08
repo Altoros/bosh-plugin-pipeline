@@ -1,0 +1,6 @@
+language: ruby
+before_install:
+ - sudo apt-get update -qq --fix-missing
+rvm:
+  - 2.1.5
+  - 2.2.3

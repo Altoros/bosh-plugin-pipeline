@@ -18,7 +18,7 @@ module Bosh::Cli::Command
       generate_files
       say "Creating git repository...".make_green
       Git.init(plugin_name)
-      say "All is #{'Done'.make_green}."
+      say 'Done'.make_green
       say "The plugin is saved to #{File.join(Dir.pwd, plugin_name)}"
     end
 

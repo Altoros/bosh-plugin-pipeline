@@ -10,7 +10,7 @@ module Bosh::Cli::Command
     option "--path [path]", String, "Path to plugin, by default uses current folder"
     option "--without-tests", "Don't run tests before commit"
     option "--without-commit", "Don't do commit after update"
-    def perform(plugin_name)
+    def update_bosh_version(plugin_name)
       plugin_path = path || Dir.pwd
 
       extract_options(plugin_name)
@@ -18,18 +18,6 @@ module Bosh::Cli::Command
       generate_files
       say "DONE. ".make_green
       say "The plugin is saved to #{File.join(Dir.pwd, plugin_name)}"
-    end
-
-    usage "latest release version"
-    desc "Outputs the latest available bosh version."
-    def latest_bosh_version(plugin_name)
-      latest_tag
-    end
-
-    usage "latest version"
-    desc "Outputs the latest available bosh version."
-    def latest_bosh_version(plugin_name)
-      latest_tag
     end
 
   end

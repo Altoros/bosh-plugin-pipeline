@@ -39,6 +39,15 @@ describe "bosh generate plugin" do
         expect(File).to exist(File.join(plugin_folder, '.git'))
       end
 
+      it "can run rspec on generated plugin (using rake command)" do
+        Dir.chdir(plugin_folder) do
+          Bundler.with_clean_env do
+            system('bundle exec rake')
+          end
+        end
+        expect($?.exitstatus).to eq(0)
+      end
+
     end
 
     context "with parameters, license and 'bosh-' prefix" do
