@@ -5,7 +5,7 @@ module Bosh::Cli::Command
     include Bosh::BoshVersionUpdater::Helpers
 
     # example: bosh generate plugin bosh-magic
-    usage "update plugin version"
+    usage "update bosh version"
     desc "Updates plugin's BOSH version, runs tests and makes commit"
     option "--path [path]", String, "Path to plugin, by default uses current folder"
     option "--without-tests", "Don't run tests before commit"
@@ -18,6 +18,18 @@ module Bosh::Cli::Command
       generate_files
       say "DONE. ".make_green
       say "The plugin is saved to #{File.join(Dir.pwd, plugin_name)}"
+    end
+
+    usage "latest release version"
+    desc "Outputs the latest available bosh version."
+    def latest_bosh_version(plugin_name)
+      latest_tag
+    end
+
+    usage "latest version"
+    desc "Outputs the latest available bosh version."
+    def latest_bosh_version(plugin_name)
+      latest_tag
     end
 
   end

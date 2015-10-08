@@ -44,7 +44,7 @@ module Bosh
         generate_readme
         generate_license if license?
         generate_developer_environment
-      end      
+      end
 
       private
 
@@ -94,6 +94,8 @@ module Bosh
         generate("spec/command_spec.rb", File.join(@spec_folder, 'command_spec.rb'))
         generate("spec/.rspec", File.join(plugin_folder, '.rspec'))
         generate(".gitignore", File.join(plugin_folder, '.gitignore'))
+        generate(".ruby-version.erb", File.join(plugin_folder, '.ruby-version'))
+        generate(".ruby-gemset.erb", File.join(plugin_folder, '.ruby-gemset'))
       end
 
     end

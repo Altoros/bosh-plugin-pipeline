@@ -16,7 +16,9 @@ module Bosh::Cli::Command
       extract_options(plugin_name)
       say "Generating BOSH CLI plugin...".make_green
       generate_files
-      say "DONE. ".make_green
+      say "Creating git repository...".make_green
+      Git.init(plugin_name)
+      say "All is #{'Done'.make_green}."
       say "The plugin is saved to #{File.join(Dir.pwd, plugin_name)}"
     end
 

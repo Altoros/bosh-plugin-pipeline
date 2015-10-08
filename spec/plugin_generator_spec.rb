@@ -35,6 +35,10 @@ describe "bosh generate plugin" do
         expect(File).not_to exist(File.join(plugin_folder, 'LICENSE'))
       end
 
+      it "has initialized git repository" do
+        expect(File).to exist(File.join(plugin_folder, '.git'))
+      end
+
     end
 
     context "with parameters, license and 'bosh-' prefix" do
