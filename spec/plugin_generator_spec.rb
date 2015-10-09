@@ -66,7 +66,7 @@ CMD
         expect(File).to exist(plugin_folder)
       end
 
-      it 'creates gem with 'bosh-' prefix' do
+      it 'creates gem with "bosh-" prefix' do
         gemspec_file = File.join(plugin_folder, 'bosh-magic.gemspec')
         expect(File).to exist(gemspec_file)
         expect(File.read(gemspec_file)).to match(/bosh-magic/)
