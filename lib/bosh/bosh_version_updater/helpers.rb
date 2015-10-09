@@ -4,88 +4,87 @@ module Bosh
   module BoshVersionUpdater
     module Helpers
 
-      def extract_options(plugin_name)
-        @plugin_name     = plugin_name
-        @plugin_folder   = plugin_name
-        @license_type    = options[:license]
-        @lib_folder      = File.join(plugin_name, 'lib', 'bosh')
-        @spec_folder     = File.join(plugin_name, 'spec')
-        @helpers_folder  = File.join(lib_folder, short_plugin_name)
-        @commands_folder = File.join(lib_folder, 'cli', 'commands')
-
-        default_context = {
-          email: Git.global_config["user.email"],
-          author: Git.global_config["user.name"],
-          description: "Short description.",
-          license: nil,
-          full_plugin_name: full_plugin_name,
-          short_plugin_name: short_plugin_name,
-          class_name: short_plugin_name.split('_').collect(&:capitalize).join
-        }
-        context = default_context.merge(options)
-        raise "You need to specify email and author" if context[:email].nil? || context[:author].nil?
-        templates_folder = File.expand_path("../../../../templates", __FILE__)
-        @generator = Bosh::PluginGenerator::Generator.new(context, source_folder: templates_folder)
-      end
-      
-      def generate_files
-        generate_command_class
-        generate_helpers
-        generate_version
-        generate_gemspec
-        generate_readme
-        generate_license if license?
-        generate_developer_environment
-      end      
-
-      private
-
-      def full_plugin_name
-        return @full_plugin_name if @full_plugin_name
-        separator = plugin_name.include?('_') ? '_' : '-'
-        @full_plugin_name = plugin_name.start_with?('bosh') ? plugin_name : ['bosh', plugin_name].join(separator)
+      def run_tests?
+        !options[:without_tests]
       end
 
-      def short_plugin_name
-        @short_plugin_name ||= plugin_name.gsub(/^bosh[_-]/, '')
+      def make_commit?
+        !options[:without_commit]
       end
 
-      def license?
-        !!@license_type
+      def make_push?
+        !options[:without_commit]
       end
 
-      def generate_command_class
-        generate('main.rb.erb', File.join(lib_folder, "#{short_plugin_name}.rb"))
-        generate('cli/commands/command.rb.erb', File.join(commands_folder, "#{short_plugin_name}.rb"))
+      def find_gemspec_file(plugin_path)
+        gemspec_file = Dir[File.join(plugin_path, "*.gemspec")].first
+        if gemspec_file.nil?
+          say "Can't find gemspec file in #{plugin_path}.".make_yellow
+          say "[ERROR] The folder doesn't seem to contain a gem.".make_red
+          exit(2)
+        end
+        gemspec_file
       end
 
-      def generate_helpers
-        generate('helpers_folder/helpers.rb.erb', File.join(helpers_folder, 'helpers.rb'))
+      def update_bosh_gem_version_in_gemspec(gemspec_file)
+        say "Using #{gemspec_file} gemspec file to update BOSH version"
+
+        current_bosh_version = bosh_gem_latest_version
+        bosh_version_regex = /bosh_version\s*=\s*['"]((\d+\.)?(\d+\.)?(\*|\d+))['"]/
+        gemspec_file_text = File.read(gemspec_file)
+        old_bosh_version_match = gemspec_file_text.match(bosh_version_regex)
+
+        if old_bosh_version_match.nil?
+          say "Can't find BOSH version if gemspec.".make_yellow
+          say "We expected your gemspec file contains 'bosh_version = \"<some-version>\" string.".make_yellow
+          say "[ERROR] Can't find BOSH version.".make_red
+          exit(2)        
+        end
+
+        old_bosh_version = old_bosh_version_match.to_a[1]
+        if old_bosh_version == current_bosh_version
+          say "Everything is uptodate."
+          exit(0)
+        end
+
+        say "Changing BOSH version from #{old_bosh_version} to #{current_bosh_version}"
+        gemspec_file_text.gsub!(bosh_version_regex, "bosh_version = '#{current_bosh_version}'")
+        File.open(gemspec_file, 'w') { |file| file.write(gemspec_file_text) }
+
+        say "gemspec file is updated."
       end
 
-      def generate_version
-        generate('helpers_folder/version.rb.erb', File.join(helpers_folder, 'version.rb'))
+      def run_bundle_install(plugin_path)
+        Dir.chdir(plugin_path) do
+          Bundler.with_clean_env do
+            system('bundle install')
+            unless ($?.success?)
+              say "`bundle install` failed.".make_red
+              exit(2)
+            end
+          end
+        end
       end
 
-      def generate_gemspec
-        generate('gemspec.erb', File.join(plugin_name, "#{full_plugin_name}.gemspec"))
+      def run_tests(plugin_path)
+        Dir.chdir(plugin_path) do
+          Bundler.with_clean_env do
+            say "Running tests"
+            system('bundle exec rake')
+            unless ($?.success?)
+              say "Tests failed.".make_red
+              exit(2)
+            end
+          end
+        end
       end
 
-      def generate_readme
-        generate('README.md.erb', File.join(plugin_name, 'README.md'))
+      def make_commit(plugin_path)
+        say '#make_commit is not implemented yet'
       end
 
-      def generate_license
-        generate("licenses/#{@license_type}.txt", File.join(plugin_name, 'LICENSE'))
-      end
-
-      def generate_developer_environment
-        generate("Gemfile", File.join(plugin_folder, "Gemfile"))
-        generate("Rakefile", File.join(plugin_folder, 'Rakefile'))
-        generate("spec/spec_helper.rb", File.join(@spec_folder, 'spec_helper.rb'))
-        generate("spec/command_spec.rb", File.join(@spec_folder, 'command_spec.rb'))
-        generate("spec/.rspec", File.join(plugin_folder, '.rspec'))
-        generate(".gitignore", File.join(plugin_folder, '.gitignore'))
+      def make_push(plugin_path)
+        say '#make_commit is not implemented yet'
       end
 
     end

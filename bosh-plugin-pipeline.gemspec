@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'bosh_cli',  ">= #{bosh_version}"
   spec.add_runtime_dependency 'bosh_common',  ">= #{bosh_version}"
-  spec.add_runtime_dependency 'bosh-versions',  '~> 0.1.0'
+  spec.add_runtime_dependency 'bosh-versions',  '~> 0.1.1'
   spec.add_runtime_dependency 'membrane', '~> 1.1.0'
   spec.add_runtime_dependency 'erubis', '~> 2.7.0'
   spec.add_runtime_dependency 'git', '~> 1.2.6'

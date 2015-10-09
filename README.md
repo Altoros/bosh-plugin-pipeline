@@ -8,6 +8,7 @@ This gem allows to create a file system tree structure for BOSH plugin and to up
 BOSH orchestrates initial deployments and ongoing updates that are: predictable, repeatable, reliable, self-healing, infrastructure-agnostic. You can take a look on [BOSH project on GitHub](https://github.com/cloudfoundry/bosh) and read more details in [docs](http://docs.cloudfoundry.org/bosh/).
 
 ## How to install
+
 ```
 gem install bosh-plugin-pipeline
 ```
@@ -33,6 +34,18 @@ To get familiar with how to build your custom BOSH CLI plugin you'll find useful
 To publish your plugin as a gem on [rubygems.org](http://rubygems.org/) see [this notes](http://guides.rubygems.org/publishing/).
 
 ### Updating BOSH version in your plugin
+
+```
+bosh update-bosh-version [path]
+```
+
+It takes as a parameter `path` to plugin, if `path` is not specified it uses current folder.
+
+Possible attributes:
+
+ * `--without-tests` - Don't run tests before commit
+ * `--without-commit` - Don't do commit after update
+ * `--without-push` - Don't push updated gem to github and rubygems
 
 
 ## Contributing

@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     bosh-plugin-pipeline (0.1.0)
-      bosh-versions (~> 0.1.0)
+      bosh-versions (~> 0.1.1)
       bosh_cli (>= 1.3098.0)
       bosh_common (>= 1.3098.0)
       erubis (~> 2.7.0)
@@ -30,7 +30,7 @@ GEM
       multi_json (~> 1.1)
     bosh-template (1.3098.0)
       semi_semantic (~> 1.1.0)
-    bosh-versions (0.1.0)
+    bosh-versions (0.1.1)
       bosh_cli (>= 1.3098.0)
       bosh_common (>= 1.3098.0)
       membrane (~> 1.1.0)
