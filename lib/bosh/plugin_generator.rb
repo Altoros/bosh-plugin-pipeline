@@ -7,5 +7,5 @@ module Bosh
   end
 end
 
-require "bosh/plugin_generator/generator"
+require "bosh/template_generator/generator"
 require "bosh/plugin_generator/helpers"

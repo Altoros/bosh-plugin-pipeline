@@ -35,7 +35,7 @@ module Bosh
         context = default_context.merge(options)
         raise "You need to specify email and author" if context[:email].nil? || context[:author].nil?
         templates_folder = File.expand_path("../../../../templates", __FILE__)
-        @generator = Bosh::PluginGenerator::Generator.new(context, source_folder: templates_folder)
+        @generator = Bosh::TemplateGenerator::Generator.new(context, source_folder: templates_folder)
       end
       
       def generate_files

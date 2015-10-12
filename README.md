@@ -35,6 +35,8 @@ To publish your plugin as a gem on [rubygems.org](http://rubygems.org/) see [thi
 
 ### Updating BOSH version in your plugin
 
+This command helps you to have support for uptodate BOSH version. You also may consider to use [gemnasium](https://gemnasium.com/) to keep track of other dependencies.
+
 ```
 bosh update-bosh-version [path]
 ```
@@ -46,7 +48,6 @@ Possible attributes:
  * `--without-tests` - Don't run tests before commit
  * `--without-commit` - Don't do commit after update
  * `--without-push` - Don't push updated gem to github and rubygems
-
 
 ## Contributing
 

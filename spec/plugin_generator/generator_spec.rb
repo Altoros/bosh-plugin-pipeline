@@ -1,8 +1,8 @@
-describe Bosh::PluginGenerator::Generator do
+describe Bosh::TemplateGenerator::Generator do
   let(:context) { { people: ['you', 'me'] } }
   let(:tmpdir) { Dir.mktmpdir }
   let(:target) { File.join(tmpdir, 'subfolder-1', 'subfolder-2', 'result.txt') }
-  subject { Bosh::PluginGenerator::Generator.new(context, source_folder: File.expand_path('../../assets', __FILE__)) }
+  subject { Bosh::TemplateGenerator::Generator.new(context, source_folder: File.expand_path('../../assets', __FILE__)) }
   after { FileUtils.remove_entry_secure tmpdir }
 
   describe '#generate' do
